@@ -3,13 +3,36 @@ require "base64"
 require "date"
 
 class Fetcher
-  attr_accessor :uri
+  BASE_URL = "https://#{ENV["HARVEST_USERNAME"]}.harvestapp.com".freeze
+  TASKS_ENDPOINT = "/tasks".freeze
+  ENTRIES_ENDPOINT = "/people/#{ENV["HARVEST_USER_ID"]}/entries".freeze
 
-  def initialize
-    self.uri = URI(base_url + endpoint + query)
+  # fetches and returns tasks from harvest
+  def tasks
+    uri = URI(BASE_URL + TASKS_ENDPOINT)
+
+    make_request(uri)
   end
 
-  def call
+  # fetches and returns entries from harvest
+  def entries
+    uri = URI(BASE_URL + ENTRIES_ENDPOINT + days_query)
+
+    make_request(uri)
+  end
+
+  private
+
+  def days_query
+    "?from=#{ENV["HARVEST_START"]}&to=#{Date.today.strftime("%Y%m%d")}"
+  end
+
+  def credentials
+    Base64.strict_encode64 "#{ENV["HARVEST_EMAIL"]}:#{ENV["HARVEST_PW"]}"
+  end
+
+  # takes a uri and executes a get request with harvest's required headers
+  def make_request(uri)
     request = Net::HTTP::Get.new uri
 
     request["Authorization"] = "Basic #{credentials}"
@@ -19,23 +42,5 @@ class Fetcher
     Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
       http.request request
     end
-  end
-
-  private
-
-  def base_url
-    "https://#{ENV["HARVEST_USERNAME"]}.harvestapp.com"
-  end
-
-  def endpoint
-    "/people/#{ENV["HARVEST_USER_ID"]}/entries"
-  end
-
-  def query
-    "?from=#{ENV["HARVEST_START"]}&to=#{Date.today.strftime("%Y%m%d")}"
-  end
-
-  def credentials
-    Base64.strict_encode64 "#{ENV["HARVEST_EMAIL"]}:#{ENV["HARVEST_PW"]}"
   end
 end
