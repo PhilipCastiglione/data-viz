@@ -1,3 +1,4 @@
+require 'pry' # REMOVE THIS
 require "rubygems"
 require "bundler"
 Bundler.require
@@ -17,10 +18,13 @@ class DataViz
   end
 
   def call
-    #serialized_time_entries = fetcher.call
+    raw_tasks = fetcher.tasks
+    raw_entries = fetcher.entries
 
+    transformer.raw_tasks = raw_tasks.body
+    transformer.raw_entries = raw_entries.body
 
-
+    transformer.generate_csv
   end
 end
 
