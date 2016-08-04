@@ -3,12 +3,9 @@ require "base64"
 require "date"
 
 class Fetcher
-  attr_accessor :email, :password, :uri
-
+  attr_accessor :uri
 
   def initialize
-    self.email = ENV["HARVEST_EMAIL"]
-    self.password = ENV["HARVEST_PW"]
     self.uri = URI(base_url + endpoint + query)
   end
 
@@ -39,6 +36,6 @@ class Fetcher
   end
 
   def credentials
-    Base64.strict_encode64 "#{email}:#{password}"
+    Base64.strict_encode64 "#{ENV["HARVEST_EMAIL"]}:#{ENV["HARVEST_PW"]}"
   end
 end
