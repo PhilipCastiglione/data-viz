@@ -2,12 +2,16 @@ GEM
   remote: https://rubygems.org/
   specs:
     dotenv (2.1.1)
+    gruff (0.7.0)
+      rmagick (~> 2.13, >= 2.13.4)
+    rmagick (2.15.4)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   dotenv (~> 2.1.1)
+  gruff (~> 0.7.0)
 
 RUBY VERSION
    ruby 2.3.1p112
