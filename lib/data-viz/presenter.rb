@@ -22,22 +22,18 @@ class Presenter
 
   private
 
-  def load_csv(&block)
-    CSV.foreach("./csv/#{date}.csv",{ headers: true }, &block)
-  end
-
   def extract_tasks_and_dates
     load_csv do |row|
       self.tasks << row["Task"]
       self.summary_tasks << task_subset(row["Task"])
       self.dates << row["Date"]
     end
-    self.tasks.uniq!
-    self.summary_tasks.uniq!
-    self.dates.uniq!
   end
 
   def prepare_data_structure
+    self.tasks.uniq!
+    self.summary_tasks.uniq!
+    self.dates.uniq!
     self.data = tasks.reduce({}) { |h, t| h.merge(t => [0] * dates.size) }
     self.summary_data = summary_tasks.reduce({}) { |h, t| h.merge(t => [0] * dates.size) }
   end
@@ -54,6 +50,10 @@ class Presenter
       data[row["Task"]][day_num - 1] += row["Hours"].to_f
       summary_data[task_subset(row["Task"])][day_num - 1] += row["Hours"].to_f
     end
+  end
+
+  def load_csv(&block)
+    CSV.foreach("./csv/#{date}.csv",{ headers: true }, &block)
   end
 
   def task_subset(task)
