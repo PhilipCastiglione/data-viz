@@ -1,2 +1,5 @@
 #!/usr/bin/env ruby
+
 load './lib/data-viz.rb'
+
+DataViz.new.call
