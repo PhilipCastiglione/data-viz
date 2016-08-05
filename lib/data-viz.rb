@@ -1,8 +1,9 @@
-require 'pry' # REMOVE THIS
 require "rubygems"
 require "bundler"
 Bundler.require
 Dotenv.load
+
+require "date"
 
 require_relative "./data-viz/fetcher"
 require_relative "./data-viz/transformer"
@@ -12,9 +13,10 @@ class DataViz
   attr_accessor :fetcher, :transformer, :presenter
 
   def initialize
-    self.fetcher = Fetcher.new
-    self.transformer = Transformer.new
-    self.presenter = Presenter.new
+    date = Date.today.strftime("%Y%m%d")
+    self.fetcher = Fetcher.new(date)
+    self.transformer = Transformer.new(date)
+    self.presenter = Presenter.new(date)
   end
 
   def call
@@ -25,7 +27,7 @@ class DataViz
     transformer.raw_entries = raw_entries.body
 
     transformer.generate_csv
+
+    presenter.generate_charts
   end
 end
-
-DataViz.new.call
