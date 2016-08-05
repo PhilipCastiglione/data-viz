@@ -17,7 +17,8 @@ class Presenter
 
     populate_data
   
-    generate_images
+    generate_report(summary_data, "Timesheet Summary")
+    generate_report(data, "Timesheet Details")
   end
 
   private
@@ -66,17 +67,11 @@ class Presenter
     end
   end
 
-  def generate_images
+  def generate_report(content, name)
     chart = Gruff::StackedBar.new
-    chart.title = "Harvest Timesheet Detailed Report"
+    chart.title = "#{name} Report"
     chart.labels = Hash[(0...dates.size).zip dates.map { |d| d.slice(5, 9) }]
-    data.each { |task, hours| chart.data(task, hours) }
-    chart.write("./charts/#{date}_detail.png")
-
-    chart = Gruff::StackedBar.new
-    chart.title = "Harvest Timesheet Summary Report"
-    chart.labels = Hash[(0...dates.size).zip dates.map { |d| d.slice(5, 9) }]
-    summary_data.each { |task, hours| chart.data(task, hours) }
-    chart.write("./charts/#{date}_summary.png")
+    content.each { |task, hours| chart.data(task, hours) }
+    chart.write("./charts/#{date}_#{name.downcase.gsub(' ', '_')}.png")
   end
 end
