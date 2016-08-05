@@ -1,11 +1,16 @@
 require "net/http"
 require "base64"
-require "date"
 
 class Fetcher
   BASE_URL = "https://#{ENV["HARVEST_USERNAME"]}.harvestapp.com".freeze
   TASKS_ENDPOINT = "/tasks".freeze
   ENTRIES_ENDPOINT = "/people/#{ENV["HARVEST_USER_ID"]}/entries".freeze
+
+  attr_accessor :date
+
+  def initialize(date)
+    self.date = date
+  end
 
   # fetches and returns tasks from harvest
   def tasks
@@ -24,7 +29,7 @@ class Fetcher
   private
 
   def days_query
-    "?from=#{ENV["HARVEST_START"]}&to=#{Date.today.strftime("%Y%m%d")}"
+    "?from=#{ENV["HARVEST_START"]}&to=#{date}"
   end
 
   def credentials
