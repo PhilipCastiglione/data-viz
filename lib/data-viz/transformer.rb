@@ -4,7 +4,11 @@ require "csv"
 class Transformer
   HEADERS = %w(Date Task Hours).freeze
 
-  attr_accessor :raw_tasks, :tasks, :raw_entries, :entries
+  attr_accessor :date, :raw_tasks, :tasks, :raw_entries, :entries
+
+  def initialize(date)
+    self.date = date
+  end
 
   def generate_csv
     raise ArgumentError if raw_tasks.nil? || raw_entries.nil?
@@ -12,7 +16,7 @@ class Transformer
     build_task_hash
     clean_up_entries
 
-    CSV.open("./csv/#{Date.today.strftime("%Y%m%d")}.csv", "wb") do |csv|
+    CSV.open("./csv/#{date}.csv", "wb") do |csv|
       csv << HEADERS
       rows.each { |r| csv << r }
     end
