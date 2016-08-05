@@ -6,4 +6,6 @@
 - ✓ ~~include Dotenv.load~~
 - ✓ ~~script to pull latest data from harvest with my credentials (use env variables so I can put this up on gh~~
 - ✓ ~~csv generation~~
-- develop a few useful data visualisations using sciruby stuff
+- ✓ ~~develop a few useful data visualisations using sciruby stuff~~
+- reorder tasks in report to be more interesting
+- think about what reports might actually be useful
