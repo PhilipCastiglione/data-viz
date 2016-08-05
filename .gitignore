@@ -2,3 +2,4 @@
 .DS_Store
 .env
 csv/*.csv
+charts/*.png
