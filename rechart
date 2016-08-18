@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+load './lib/data-viz.rb'
+
+DataViz.regenerate_presentation

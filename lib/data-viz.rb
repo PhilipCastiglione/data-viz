@@ -34,4 +34,12 @@ class DataViz
     p "presenting"
     presenter.generate_charts
   end
+
+  def self.regenerate_presentation
+    Dir.foreach("./csv/") do |csv|
+      regex_date = csv.match(/([0-9]+)\.csv/)
+      p "presenting" if regex_date
+      Presenter.new(regex_date[1]).generate_charts if regex_date
+    end
+  end
 end
