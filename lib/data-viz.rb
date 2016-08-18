@@ -20,14 +20,17 @@ class DataViz
   end
 
   def call
+    p "fetching"
     raw_tasks = fetcher.tasks
     raw_entries = fetcher.entries
 
+    p "transforming"
     transformer.raw_tasks = raw_tasks.body
     transformer.raw_entries = raw_entries.body
 
     transformer.generate_csv
 
+    p "presenting"
     presenter.generate_charts
   end
 end
