@@ -5,6 +5,7 @@ Dotenv.load
 
 require "date"
 
+require_relative ".././vendor/gruff-patch"
 require_relative "./data-viz/fetcher"
 require_relative "./data-viz/transformer"
 require_relative "./data-viz/presenter"
